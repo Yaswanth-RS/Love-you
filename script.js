@@ -1,6 +1,21 @@
+const imageUrls = {
+  intro: "PASTE_DIRECT_IMAGE_URL_HERE",
+  normal: "PASTE_DIRECT_IMAGE_URL_HERE",
+  sad: "PASTE_DIRECT_IMAGE_URL_HERE",
+  crying: "PASTE_DIRECT_IMAGE_URL_HERE",
+  sorry: "PASTE_DIRECT_IMAGE_URL_HERE",
+  forgive: "PASTE_DIRECT_IMAGE_URL_HERE",
+  happy: "PASTE_DIRECT_IMAGE_URL_HERE",
+  sign: "PASTE_DIRECT_IMAGE_URL_HERE"
+};
+
 const introScreen = document.getElementById("introScreen");
 const questionScreen = document.getElementById("questionScreen");
 const yesScreen = document.getElementById("yesScreen");
+
+const introCat = document.getElementById("introCat");
+const happyCat = document.getElementById("happyCat");
+const letterCat = document.getElementById("letterCat");
 
 const nameForm = document.getElementById("nameForm");
 const nameInput = document.getElementById("nameInput");
@@ -34,31 +49,38 @@ let musicOn = false;
 
 const catStates = [
   {
-    image: "images/sad-kitten.jpg",
+    image: imageUrls.sad,
     caption: "The cat is getting emotional.",
     message: () => `Okay ${herName}, I deserve that. But please look at this sad face and think once more?`
   },
   {
-    image: "images/crying-cat.jpg",
+    image: imageUrls.crying,
     caption: "One tear has officially fallen.",
     message: () => `I promise I will do better, ${herName}. Can your angry heart give me one small chance?`
   },
   {
-    image: "images/sorry-cat.jpg",
+    image: imageUrls.sorry,
     caption: "The cat says: please forgive this human.",
     message: () => `No? Then I am sending extra sorry, extra care, and extra hugs to you, ${herName}.`
   },
   {
-    image: "images/forgive-cat.jpg",
+    image: imageUrls.forgive,
     caption: "Even the cat is begging now.",
     message: () => `${herName}, even this tiny cat is asking you to forgive me. Please?`
   },
   {
-    image: "images/sign-cat.jpg",
+    image: imageUrls.sign,
     caption: "Last emotional attack.",
     message: () => `Last try before I become fully dramatic. ${herName}, will you forgive me now?`
   }
 ];
+
+function setupImages() {
+  introCat.src = imageUrls.intro;
+  catImage.src = imageUrls.normal;
+  happyCat.src = imageUrls.happy;
+  letterCat.src = imageUrls.sign;
+}
 
 function cleanName(value) {
   return value.trim().replace(/\s+/g, " ");
@@ -95,7 +117,7 @@ function typeMessage(text) {
 
 function resetQuestionState() {
   noCount = 0;
-  catImage.src = "images/heart-cat.jpg";
+  catImage.src = imageUrls.normal;
   catCaption.textContent = "This cat believes in us.";
   yesBtn.style.setProperty("--yes-scale", 1);
   noBtn.classList.remove("runaway");
@@ -275,6 +297,8 @@ function playNote(frequency, startTime, duration) {
   oscillator.start(startTime);
   oscillator.stop(startTime + duration + 0.05);
 }
+
+setupImages();
 
 nameForm.addEventListener("submit", startApology);
 noBtn.addEventListener("click", handleNo);
