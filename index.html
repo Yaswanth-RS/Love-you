@@ -10,9 +10,9 @@
   <main class="app">
     <button class="music-toggle" id="musicToggle" type="button">Music OFF</button>
 
-    <section class="screen intro-screen" id="introScreen">
+    <section class="screen" id="introScreen">
       <form class="glass-panel" id="nameForm">
-        <img src="images/heart-cat.gif" class="main-cat" alt="Cute cat with heart" />
+        <img id="introCat" class="main-cat" alt="Cute cat with heart" />
         <p class="eyebrow">A little love letter begins here</p>
         <h1>Enter her name</h1>
         <p class="lead">I will make this apology feel like it was written only for her.</p>
@@ -24,13 +24,13 @@
       </form>
     </section>
 
-    <section class="screen question-screen hidden" id="questionScreen">
+    <section class="screen hidden" id="questionScreen">
       <div class="glass-panel">
         <p class="eyebrow">A tiny sorry from me to you</p>
         <h2 id="questionTitle">Will you forgive me?</h2>
         <p class="message typewriter" id="messageText"></p>
 
-        <img id="catImage" src="images/heart-cat.jpg" class="main-cat" alt="Cute apology cat" />
+        <img id="catImage" class="main-cat" alt="Cute apology cat" />
         <p class="cat-caption" id="catCaption">This cat believes in us.</p>
 
         <div class="actions">
@@ -40,18 +40,18 @@
       </div>
     </section>
 
-    <section class="screen yes-screen hidden" id="yesScreen">
+    <section class="screen hidden" id="yesScreen">
       <div class="confetti" id="confetti"></div>
 
       <div class="glass-panel final-panel">
-        <img src="images/cute-cat.jpg" class="main-cat happy-cat" alt="Happy cute cat" />
+        <img id="happyCat" class="main-cat happy-cat" alt="Happy cute cat" />
 
         <p class="eyebrow">She said yes</p>
         <h2 id="yesTitle">Thank you for giving me another chance.</h2>
         <p id="yesMessage"></p>
 
         <div class="letter">
-          <img src="images/sign-cat.jpg" class="letter-cat" alt="Kitten saying sorry" />
+          <img id="letterCat" class="letter-cat" alt="Kitten saying sorry" />
           <p id="letterGreeting" class="script">My favorite person,</p>
           <p id="letterBody"></p>
           <p class="closing">Please smile now. I miss you.</p>
