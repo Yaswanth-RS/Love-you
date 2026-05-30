@@ -1,12 +1,12 @@
 const imageUrls = {
   intro: "https://i.pinimg.com/564x/f0/a6/9e/f0a69ef75c98d89811f0581c5746b678.jpg",
-  normal: "PASTE_DIRECT_IMAGE_URL_HERE",
-  sad: "PASTE_DIRECT_IMAGE_URL_HERE",
-  crying: "PASTE_DIRECT_IMAGE_URL_HERE",
-  sorry: "PASTE_DIRECT_IMAGE_URL_HERE",
-  forgive: "PASTE_DIRECT_IMAGE_URL_HERE",
-  happy: "PASTE_DIRECT_IMAGE_URL_HERE",
-  sign: "PASTE_DIRECT_IMAGE_URL_HERE"
+  normal: "https://www.shutterstock.com/image-photo/cute-baby-kitten-sit-on-260nw-225191650.jpg",
+  sad: "https://media.tenor.com/tuzl1hVGlIQAAAAe/sad-cat-sad-cat-meme.png",
+  crying: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQBUTFqaeZ9pmsVGV41phIg79YoiFFXxqFZRg&s",
+  sorry: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcT-crQe-JoTdqrKcqNzT681jXkd7xilhipd6w&s",
+  forgive: "https://media.tenor.com/a_DFSqheS8kAAAAM/cute-cat.gif",
+  happy: "https://media.tenor.com/LGswLLbMPI8AAAAe/cat-cat-love.png",
+  sign: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQs_7WK3dwIoxZUW709TY7KDPaNSv8UlikAVQ&s"
 };
 
 const introScreen = document.getElementById("introScreen");
