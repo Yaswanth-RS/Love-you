@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Please Forgive Me</title>
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <main class="app" aria-live="polite">
+    <section class="question-screen" id="questionScreen">
+      <div class="floating-hearts" aria-hidden="true">
+        <span></span>
+        <span></span>
+        <span></span>
+        <span></span>
+        <span></span>
+        <span></span>
+      </div>
+
+      <div class="love-panel">
+        <p class="eyebrow">A tiny sorry from me to you</p>
+        <h1>Will you forgive me and love me again?</h1>
+        <p class="message" id="messageText">
+          I know I made you angry, and I am really sorry. I made this little page because you deserve effort, sweetness, and the biggest apology from my heart.
+        </p>
+
+        <div class="cat-wrap" id="catWrap" aria-label="A cute cat waiting for your answer">
+          <div class="cat">
+            <div class="ear ear-left"></div>
+            <div class="ear ear-right"></div>
+            <div class="face">
+              <div class="eye eye-left"></div>
+              <div class="eye eye-right"></div>
+              <div class="tear tear-left"></div>
+              <div class="tear tear-right"></div>
+              <div class="nose"></div>
+              <div class="mouth"></div>
+              <div class="whisker whisker-left top"></div>
+              <div class="whisker whisker-left bottom"></div>
+              <div class="whisker whisker-right top"></div>
+              <div class="whisker whisker-right bottom"></div>
+            </div>
+          </div>
+          <p class="cat-caption" id="catCaption">This cat believes in us.</p>
+        </div>
+
+        <div class="actions">
+          <button class="btn yes-btn" id="yesBtn" type="button">Yes, I forgive you</button>
+          <button class="btn no-btn" id="noBtn" type="button">No</button>
+        </div>
+      </div>
+    </section>
+
+    <section class="yes-screen hidden" id="yesScreen">
+      <div class="confetti" id="confetti" aria-hidden="true"></div>
+
+      <div class="hero">
+        <p class="eyebrow">She said yes</p>
+        <h2>Thank you for giving me another chance.</h2>
+        <p>
+          I am sorry for hurting you. I do not want to win an argument more than I want to protect your smile. I promise to listen better, speak softer, and choose you with more care.
+        </p>
+      </div>
+
+      <div class="promise-grid">
+        <article>
+          <span>01</span>
+          <h3>I will listen</h3>
+          <p>No interrupting, no defending first. I will hear what your heart is saying.</p>
+        </article>
+        <article>
+          <span>02</span>
+          <h3>I will improve</h3>
+          <p>Sorry is only beautiful when my actions become kinder after it.</p>
+        </article>
+        <article>
+          <span>03</span>
+          <h3>I will choose us</h3>
+          <p>Even on difficult days, I want to be your peace, not your problem.</p>
+        </article>
+      </div>
+
+      <div class="letter">
+        <p class="script">My favorite person,</p>
+        <p>
+          You are precious to me. Your laugh, your mood, your little angry face, and your soft heart all matter to me. I made this page because I never want you to feel ordinary in my life.
+        </p>
+        <p class="closing">Please smile now. I miss you.</p>
+      </div>
+
+      <button class="btn restart-btn" id="restartBtn" type="button">Replay the love test</button>
+    </section>
+  </main>
+
+  <script src="script.js"></script>
+</body>
+</html>
