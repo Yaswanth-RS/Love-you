@@ -1,72 +1,37 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Please Forgive Me</title>
-  <link rel="stylesheet" href="styles.css">
+  <link rel="stylesheet" href="styles.css" />
 </head>
 <body>
-  <main class="app" aria-live="polite">
-    <div class="ambient ambient-one" aria-hidden="true"></div>
-    <div class="ambient ambient-two" aria-hidden="true"></div>
-    <div class="floating-hearts" aria-hidden="true">
-      <span></span>
-      <span></span>
-      <span></span>
-      <span></span>
-      <span></span>
-      <span></span>
-      <span></span>
-      <span></span>
-    </div>
-
-    <button class="music-toggle" id="musicToggle" type="button" aria-pressed="false">
-      Music OFF
-    </button>
+  <main class="app">
+    <button class="music-toggle" id="musicToggle" type="button">Music OFF</button>
 
     <section class="screen intro-screen" id="introScreen">
-      <form class="glass-panel intro-panel" id="nameForm">
-        <div class="intro-badge" aria-hidden="true">For her</div>
+      <form class="glass-panel" id="nameForm">
+        <img src="images/heart-cat.gif" class="main-cat" alt="Cute cat with heart" />
         <p class="eyebrow">A little love letter begins here</p>
         <h1>Enter her name</h1>
-        <p class="lead">
-          I will make the apology feel like it was written only for her, because it should.
-        </p>
-        <label class="name-field">
-          <span>Her beautiful name</span>
-          <input id="nameInput" type="text" autocomplete="name" maxlength="28" placeholder="Type her name" aria-describedby="nameError">
-        </label>
-        <p class="form-error" id="nameError" role="alert"></p>
+        <p class="lead">I will make this apology feel like it was written only for her.</p>
+
+        <input id="nameInput" type="text" maxlength="28" placeholder="Type her name" />
+        <p class="error" id="nameError"></p>
+
         <button class="btn primary-btn" type="submit">Start the apology</button>
       </form>
     </section>
 
     <section class="screen question-screen hidden" id="questionScreen">
-      <div class="glass-panel love-panel">
+      <div class="glass-panel">
         <p class="eyebrow">A tiny sorry from me to you</p>
-        <h2 id="questionTitle">Will you forgive me and love me again?</h2>
+        <h2 id="questionTitle">Will you forgive me?</h2>
         <p class="message typewriter" id="messageText"></p>
 
-        <div class="cat-wrap" id="catWrap" aria-label="A cute sad cat waiting for your answer">
-          <div class="cat">
-            <div class="ear ear-left"></div>
-            <div class="ear ear-right"></div>
-            <div class="face">
-              <div class="eye eye-left"></div>
-              <div class="eye eye-right"></div>
-              <div class="tear tear-left"></div>
-              <div class="tear tear-right"></div>
-              <div class="nose"></div>
-              <div class="mouth"></div>
-              <div class="whisker whisker-left top"></div>
-              <div class="whisker whisker-left bottom"></div>
-              <div class="whisker whisker-right top"></div>
-              <div class="whisker whisker-right bottom"></div>
-            </div>
-          </div>
-          <p class="cat-caption" id="catCaption">This cat believes in us.</p>
-        </div>
+        <img id="catImage" src="images/heart-cat.jpg" class="main-cat" alt="Cute apology cat" />
+        <p class="cat-caption" id="catCaption">This cat believes in us.</p>
 
         <div class="actions">
           <button class="btn yes-btn" id="yesBtn" type="button">Yes, I forgive you</button>
@@ -76,48 +41,29 @@
     </section>
 
     <section class="screen yes-screen hidden" id="yesScreen">
-      <div class="confetti" id="confetti" aria-hidden="true"></div>
-      <div class="heart-stage" id="heartStage" aria-hidden="true"></div>
+      <div class="confetti" id="confetti"></div>
 
-      <div class="hero">
+      <div class="glass-panel final-panel">
+        <img src="images/cute-cat.jpg" class="main-cat happy-cat" alt="Happy cute cat" />
+
         <p class="eyebrow">She said yes</p>
         <h2 id="yesTitle">Thank you for giving me another chance.</h2>
-        <p id="yesMessage">
-          I am sorry for hurting you. I do not want to win an argument more than I want to protect your smile.
-        </p>
-      </div>
+        <p id="yesMessage"></p>
 
-      <div class="promise-grid">
-        <article>
-          <span>01</span>
-          <h3>I will listen</h3>
-          <p>No interrupting, no defending first. I will hear what your heart is saying.</p>
-        </article>
-        <article>
-          <span>02</span>
-          <h3>I will improve</h3>
-          <p>Sorry is only beautiful when my actions become kinder after it.</p>
-        </article>
-        <article>
-          <span>03</span>
-          <h3>I will choose us</h3>
-          <p>Even on difficult days, I want to be your peace, not your problem.</p>
-        </article>
-      </div>
+        <div class="letter">
+          <img src="images/sign-cat.jpg" class="letter-cat" alt="Kitten saying sorry" />
+          <p id="letterGreeting" class="script">My favorite person,</p>
+          <p id="letterBody"></p>
+          <p class="closing">Please smile now. I miss you.</p>
+        </div>
 
-      <div class="letter">
-        <p class="script" id="letterGreeting">My favorite person,</p>
-        <p id="letterBody">
-          You are precious to me. Your laugh, your mood, your little angry face, and your soft heart all matter to me.
-        </p>
-        <p class="closing">Please smile now. I miss you.</p>
-      </div>
+        <div class="final-actions">
+          <button class="btn share-btn" id="shareBtn" type="button">Share this page</button>
+          <button class="btn restart-btn" id="restartBtn" type="button">Replay</button>
+        </div>
 
-      <div class="final-actions">
-        <button class="btn share-btn" id="shareBtn" type="button">Share this page</button>
-        <button class="btn restart-btn" id="restartBtn" type="button">Replay the love test</button>
+        <p class="share-status" id="shareStatus"></p>
       </div>
-      <p class="share-status" id="shareStatus" role="status"></p>
     </section>
   </main>
 
