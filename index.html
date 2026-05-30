@@ -27,6 +27,7 @@
 
     <section class="screen intro-screen" id="introScreen">
       <form class="glass-panel intro-panel" id="nameForm">
+        <div class="intro-badge" aria-hidden="true">For her</div>
         <p class="eyebrow">A little love letter begins here</p>
         <h1>Enter her name</h1>
         <p class="lead">
@@ -34,8 +35,9 @@
         </p>
         <label class="name-field">
           <span>Her beautiful name</span>
-          <input id="nameInput" type="text" autocomplete="name" maxlength="28" placeholder="Type her name" required>
+          <input id="nameInput" type="text" autocomplete="name" maxlength="28" placeholder="Type her name" aria-describedby="nameError">
         </label>
+        <p class="form-error" id="nameError" role="alert"></p>
         <button class="btn primary-btn" type="submit">Start the apology</button>
       </form>
     </section>
