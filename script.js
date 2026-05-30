@@ -3,6 +3,7 @@ const questionScreen = document.getElementById("questionScreen");
 const yesScreen = document.getElementById("yesScreen");
 const nameForm = document.getElementById("nameForm");
 const nameInput = document.getElementById("nameInput");
+const nameError = document.getElementById("nameError");
 const questionTitle = document.getElementById("questionTitle");
 const messageText = document.getElementById("messageText");
 const catWrap = document.getElementById("catWrap");
@@ -26,6 +27,7 @@ let typeTimer = 0;
 let audioContext = null;
 let musicTimer = null;
 let musicOn = false;
+let transitionTimer = 0;
 
 function apologyIntro() {
   return `${herName}, I know I made you angry, and I am really sorry. I made this little page because you deserve effort, sweetness, and the biggest apology from my heart.`;
@@ -73,17 +75,45 @@ function typeMessage(text) {
 
 function startApology(event) {
   event.preventDefault();
-  herName = cleanName(nameInput.value);
+  const submittedName = cleanName(nameInput.value);
+
+  if (!submittedName) {
+    nameError.textContent = "Please enter her name";
+    nameInput.classList.add("has-error");
+    nameInput.focus();
+    return;
+  }
+
+  nameError.textContent = "";
+  nameInput.classList.remove("has-error");
+  herName = submittedName;
   questionTitle.textContent = `${herName}, will you forgive me and love me again?`;
-  introScreen.classList.add("hidden");
-  questionScreen.classList.remove("hidden");
   resetQuestionState();
-  typeMessage(apologyIntro());
+  switchScreen(introScreen, questionScreen, () => typeMessage(apologyIntro()));
 }
 
 function cleanName(value) {
   const trimmed = value.trim().replace(/\s+/g, " ");
-  return trimmed || "my love";
+  return trimmed;
+}
+
+function switchScreen(fromScreen, toScreen, afterShow) {
+  window.clearTimeout(transitionTimer);
+  fromScreen.classList.add("is-leaving");
+
+  transitionTimer = window.setTimeout(() => {
+    fromScreen.classList.add("hidden");
+    fromScreen.classList.remove("is-leaving", "is-entering");
+    toScreen.classList.remove("hidden");
+    toScreen.classList.add("is-entering");
+    window.scrollTo({ top: 0, behavior: "smooth" });
+
+    if (afterShow) {
+      afterShow();
+    }
+
+    window.setTimeout(() => toScreen.classList.remove("is-entering"), 540);
+  }, 360);
 }
 
 function handleNo() {
@@ -121,15 +151,14 @@ function moveNoButton() {
 function sayYes() {
   burstHeartsFromButton();
   window.setTimeout(() => {
-    questionScreen.classList.add("hidden");
-    yesScreen.classList.remove("hidden");
     yesTitle.textContent = `${herName}, thank you for giving me another chance.`;
     yesMessage.textContent = `I am sorry for hurting you, ${herName}. I do not want to win an argument more than I want to protect your smile. I promise to listen better, speak softer, and choose you with more care.`;
     letterGreeting.textContent = `My favorite ${herName},`;
     letterBody.textContent = `You are precious to me. Your laugh, your mood, your little angry face, and your soft heart all matter to me. I made this page because I never want you to feel ordinary in my life.`;
-    launchConfetti();
-    launchHeartExplosion(window.innerWidth / 2, Math.min(window.innerHeight * 0.38, 330), 48);
-    window.scrollTo({ top: 0, behavior: "smooth" });
+    switchScreen(questionScreen, yesScreen, () => {
+      launchConfetti();
+      launchHeartExplosion(window.innerWidth / 2, Math.min(window.innerHeight * 0.38, 330), 48);
+    });
   }, 520);
 }
 
@@ -189,33 +218,33 @@ function resetQuestionState() {
 }
 
 function restart() {
-  yesScreen.classList.add("hidden");
-  introScreen.classList.remove("hidden");
-  questionScreen.classList.add("hidden");
   confetti.innerHTML = "";
   heartStage.innerHTML = "";
   shareStatus.textContent = "";
-  nameInput.focus();
+  nameInput.value = "";
+  nameError.textContent = "";
+  nameInput.classList.remove("has-error");
+  switchScreen(yesScreen, introScreen, () => nameInput.focus());
 }
 
 async function sharePage() {
   const shareData = {
-    title: `${herName}, please forgive me`,
-    text: `A little apology page made with love for ${herName}.`,
+    title: `A little sorry for ${herName}`,
+    text: `I made this tiny love page for ${herName} because one apology should feel personal, sweet, and impossible to ignore.`,
     url: window.location.href
   };
 
   try {
     if (navigator.share) {
       await navigator.share(shareData);
-      shareStatus.textContent = "Shared with love.";
+      shareStatus.textContent = "Shared. Now let the apology do its sweetest work.";
       return;
     }
 
     await navigator.clipboard.writeText(window.location.href);
-    shareStatus.textContent = "Link copied.";
+    shareStatus.textContent = "Link copied. Send it with one honest sorry.";
   } catch (error) {
-    shareStatus.textContent = "Share was cancelled.";
+    shareStatus.textContent = "Sharing paused. The page is still ready when your heart is.";
   }
 }
 
@@ -255,20 +284,35 @@ function playMelody() {
   }
 
   const now = audioContext.currentTime;
-  const notes = [523.25, 659.25, 783.99, 659.25, 587.33, 523.25, 440, 523.25];
-  notes.forEach((frequency, index) => {
-    playNote(frequency, now + index * 0.42, 0.36);
+  const melody = [659.25, 783.99, 880, 783.99, 659.25, 587.33, 659.25, 523.25];
+  const chords = [
+    [261.63, 329.63, 392],
+    [293.66, 349.23, 440],
+    [220, 329.63, 440],
+    [261.63, 392, 523.25]
+  ];
+
+  chords.forEach((chord, index) => {
+    playChord(chord, now + index * 1.8, 1.65);
+  });
+
+  melody.forEach((frequency, index) => {
+    playNote(frequency, now + 0.18 + index * 0.42, 0.34, 0.035);
   });
 }
 
-function playNote(frequency, startTime, duration) {
+function playChord(frequencies, startTime, duration) {
+  frequencies.forEach((frequency) => playNote(frequency, startTime, duration, 0.014));
+}
+
+function playNote(frequency, startTime, duration, volume) {
   const oscillator = audioContext.createOscillator();
   const gain = audioContext.createGain();
 
-  oscillator.type = "sine";
+  oscillator.type = "triangle";
   oscillator.frequency.setValueAtTime(frequency, startTime);
   gain.gain.setValueAtTime(0.0001, startTime);
-  gain.gain.exponentialRampToValueAtTime(0.045, startTime + 0.04);
+  gain.gain.exponentialRampToValueAtTime(volume, startTime + 0.08);
   gain.gain.exponentialRampToValueAtTime(0.0001, startTime + duration);
 
   oscillator.connect(gain);
@@ -283,3 +327,9 @@ yesBtn.addEventListener("click", sayYes);
 restartBtn.addEventListener("click", restart);
 shareBtn.addEventListener("click", sharePage);
 musicToggle.addEventListener("click", toggleMusic);
+nameInput.addEventListener("input", () => {
+  if (nameInput.value.trim()) {
+    nameError.textContent = "";
+    nameInput.classList.remove("has-error");
+  }
+});
