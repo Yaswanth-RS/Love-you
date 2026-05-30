@@ -1,21 +1,25 @@
 const introScreen = document.getElementById("introScreen");
 const questionScreen = document.getElementById("questionScreen");
 const yesScreen = document.getElementById("yesScreen");
+
 const nameForm = document.getElementById("nameForm");
 const nameInput = document.getElementById("nameInput");
 const nameError = document.getElementById("nameError");
+
 const questionTitle = document.getElementById("questionTitle");
 const messageText = document.getElementById("messageText");
-const catWrap = document.getElementById("catWrap");
+const catImage = document.getElementById("catImage");
 const catCaption = document.getElementById("catCaption");
+
 const yesBtn = document.getElementById("yesBtn");
 const noBtn = document.getElementById("noBtn");
 const restartBtn = document.getElementById("restartBtn");
 const shareBtn = document.getElementById("shareBtn");
 const shareStatus = document.getElementById("shareStatus");
+
 const musicToggle = document.getElementById("musicToggle");
 const confetti = document.getElementById("confetti");
-const heartStage = document.getElementById("heartStage");
+
 const yesTitle = document.getElementById("yesTitle");
 const yesMessage = document.getElementById("yesMessage");
 const letterGreeting = document.getElementById("letterGreeting");
@@ -23,110 +27,111 @@ const letterBody = document.getElementById("letterBody");
 
 let herName = "my love";
 let noCount = 0;
-let typeTimer = 0;
+let typeTimer = null;
 let audioContext = null;
 let musicTimer = null;
 let musicOn = false;
-let transitionTimer = 0;
 
-function apologyIntro() {
-  return `${herName}, I know I made you angry, and I am really sorry. I made this little page because you deserve effort, sweetness, and the biggest apology from my heart.`;
+const catStates = [
+  {
+    image: "images/sad-kitten.jpg",
+    caption: "The cat is getting emotional.",
+    message: () => `Okay ${herName}, I deserve that. But please look at this sad face and think once more?`
+  },
+  {
+    image: "images/crying-cat.jpg",
+    caption: "One tear has officially fallen.",
+    message: () => `I promise I will do better, ${herName}. Can your angry heart give me one small chance?`
+  },
+  {
+    image: "images/sorry-cat.jpg",
+    caption: "The cat says: please forgive this human.",
+    message: () => `No? Then I am sending extra sorry, extra care, and extra hugs to you, ${herName}.`
+  },
+  {
+    image: "images/forgive-cat.jpg",
+    caption: "Even the cat is begging now.",
+    message: () => `${herName}, even this tiny cat is asking you to forgive me. Please?`
+  },
+  {
+    image: "images/sign-cat.jpg",
+    caption: "Last emotional attack.",
+    message: () => `Last try before I become fully dramatic. ${herName}, will you forgive me now?`
+  }
+];
+
+function cleanName(value) {
+  return value.trim().replace(/\s+/g, " ");
 }
 
-function getPleas() {
-  return [
-    {
-      message: `Okay ${herName}, I deserve that. But please look at this tiny sad face and think once more?`,
-      caption: "The cat is getting emotional."
-    },
-    {
-      message: `I promise I will do better, ${herName}. Can your angry heart give me one small chance?`,
-      caption: "One tear has officially fallen."
-    },
-    {
-      message: `No? Then I am sending extra sorry, extra care, and extra hugs to you, ${herName}.`,
-      caption: "The cat says: please forgive this human."
-    },
-    {
-      message: `I cannot force you, but I can keep asking sweetly because you matter so much to me, ${herName}.`,
-      caption: "The cat is now in dramatic crying mode."
-    },
-    {
-      message: `Last try before the cat writes a sad poem. ${herName}, will you forgive me now?`,
-      caption: "Even the No button is losing confidence."
-    }
-  ];
+function apologyIntro() {
+  return `${herName}, I know I made you angry, and I am really sorry. I made this page because you deserve effort, sweetness, and the biggest apology from my heart.`;
+}
+
+function showOnly(screenToShow) {
+  introScreen.classList.add("hidden");
+  questionScreen.classList.add("hidden");
+  yesScreen.classList.add("hidden");
+
+  screenToShow.classList.remove("hidden");
+  window.scrollTo({ top: 0, behavior: "smooth" });
 }
 
 function typeMessage(text) {
-  window.clearInterval(typeTimer);
+  clearInterval(typeTimer);
   messageText.textContent = "";
 
   let index = 0;
-  typeTimer = window.setInterval(() => {
+
+  typeTimer = setInterval(() => {
     messageText.textContent += text.charAt(index);
     index += 1;
 
     if (index >= text.length) {
-      window.clearInterval(typeTimer);
+      clearInterval(typeTimer);
     }
   }, 22);
 }
 
+function resetQuestionState() {
+  noCount = 0;
+  catImage.src = "images/heart-cat.jpg";
+  catCaption.textContent = "This cat believes in us.";
+  yesBtn.style.setProperty("--yes-scale", 1);
+  noBtn.classList.remove("runaway");
+  noBtn.removeAttribute("style");
+  noBtn.textContent = "No";
+}
+
 function startApology(event) {
   event.preventDefault();
+
   const submittedName = cleanName(nameInput.value);
 
   if (!submittedName) {
     nameError.textContent = "Please enter her name";
-    nameInput.classList.add("has-error");
     nameInput.focus();
     return;
   }
 
-  nameError.textContent = "";
-  nameInput.classList.remove("has-error");
   herName = submittedName;
+  nameError.textContent = "";
+
   questionTitle.textContent = `${herName}, will you forgive me and love me again?`;
+
   resetQuestionState();
-  switchScreen(introScreen, questionScreen, () => typeMessage(apologyIntro()));
-}
-
-function cleanName(value) {
-  const trimmed = value.trim().replace(/\s+/g, " ");
-  return trimmed;
-}
-
-function switchScreen(fromScreen, toScreen, afterShow) {
-  window.clearTimeout(transitionTimer);
-  fromScreen.classList.add("is-leaving");
-
-  transitionTimer = window.setTimeout(() => {
-    fromScreen.classList.add("hidden");
-    fromScreen.classList.remove("is-leaving", "is-entering");
-    toScreen.classList.remove("hidden");
-    toScreen.classList.add("is-entering");
-    window.scrollTo({ top: 0, behavior: "smooth" });
-
-    if (afterShow) {
-      afterShow();
-    }
-
-    window.setTimeout(() => toScreen.classList.remove("is-entering"), 540);
-  }, 360);
+  showOnly(questionScreen);
+  typeMessage(apologyIntro());
 }
 
 function handleNo() {
-  const pleas = getPleas();
-  const plea = pleas[Math.min(noCount, pleas.length - 1)];
+  const state = catStates[Math.min(noCount, catStates.length - 1)];
 
-  typeMessage(plea.message);
-  catCaption.textContent = plea.caption;
-  catWrap.classList.remove("sad", "very-sad");
-  void catWrap.offsetWidth;
-  catWrap.classList.add(noCount > 1 ? "very-sad" : "sad");
+  catImage.src = state.image;
+  catCaption.textContent = state.caption;
+  typeMessage(state.message());
 
-  const scale = Math.min(1 + (noCount + 1) * 0.15, 1.85);
+  const scale = Math.min(1 + (noCount + 1) * 0.16, 1.9);
   yesBtn.style.setProperty("--yes-scale", scale);
 
   if (noCount >= 1) {
@@ -140,6 +145,7 @@ function handleNo() {
 function moveNoButton() {
   const actionBox = noBtn.parentElement.getBoundingClientRect();
   const buttonBox = noBtn.getBoundingClientRect();
+
   const maxX = Math.max(actionBox.width - buttonBox.width, 0);
   const maxY = Math.max(actionBox.height - buttonBox.height, 0);
 
@@ -149,102 +155,65 @@ function moveNoButton() {
 }
 
 function sayYes() {
-  burstHeartsFromButton();
-  window.setTimeout(() => {
-    yesTitle.textContent = `${herName}, thank you for giving me another chance.`;
-    yesMessage.textContent = `I am sorry for hurting you, ${herName}. I do not want to win an argument more than I want to protect your smile. I promise to listen better, speak softer, and choose you with more care.`;
-    letterGreeting.textContent = `My favorite ${herName},`;
-    letterBody.textContent = `You are precious to me. Your laugh, your mood, your little angry face, and your soft heart all matter to me. I made this page because I never want you to feel ordinary in my life.`;
-    switchScreen(questionScreen, yesScreen, () => {
-      launchConfetti();
-      launchHeartExplosion(window.innerWidth / 2, Math.min(window.innerHeight * 0.38, 330), 48);
-    });
-  }, 520);
-}
+  yesTitle.textContent = `${herName}, thank you for giving me another chance.`;
 
-function burstHeartsFromButton() {
-  const box = yesBtn.getBoundingClientRect();
-  const x = box.left + box.width / 2;
-  const y = box.top + box.height / 2;
-  launchHeartExplosion(x, y, 34);
-}
+  yesMessage.textContent =
+    `I am sorry for hurting you, ${herName}. I do not want to win an argument more than I want to protect your smile. I promise to listen better, speak softer, and choose you with more care.`;
 
-function launchHeartExplosion(x, y, count) {
-  const colors = ["#f25578", "#ff7967", "#ffb0c0", "#ffffff", "#ffd1dc"];
+  letterGreeting.textContent = `My favorite ${herName},`;
 
-  for (let index = 0; index < count; index += 1) {
-    const heart = document.createElement("span");
-    const angle = (Math.PI * 2 * index) / count;
-    const distance = 70 + Math.random() * 150;
-    const size = 10 + Math.random() * 16;
+  letterBody.textContent =
+    "You are precious to me. Your laugh, your mood, your little angry face, and your soft heart all matter to me. I made this page because I never want you to feel ordinary in my life.";
 
-    heart.className = "burst-heart";
-    heart.style.setProperty("--x", `${x}px`);
-    heart.style.setProperty("--y", `${y}px`);
-    heart.style.setProperty("--dx", `${Math.cos(angle) * distance}px`);
-    heart.style.setProperty("--dy", `${Math.sin(angle) * distance}px`);
-    heart.style.setProperty("--size", `${size}px`);
-    heart.style.setProperty("--color", colors[index % colors.length]);
-    heart.style.animationDelay = `${Math.random() * 90}ms`;
-    heartStage.appendChild(heart);
-
-    window.setTimeout(() => heart.remove(), 1200);
-  }
+  showOnly(yesScreen);
+  launchConfetti();
 }
 
 function launchConfetti() {
   confetti.innerHTML = "";
+
   const colors = ["#f25578", "#ff7967", "#ffbd59", "#7cc9ff", "#ffffff"];
 
-  for (let index = 0; index < 96; index += 1) {
+  for (let i = 0; i < 100; i += 1) {
     const piece = document.createElement("span");
+
     piece.style.left = `${Math.random() * 100}%`;
-    piece.style.background = colors[index % colors.length];
-    piece.style.animationDelay = `${Math.random() * 1.1}s`;
-    piece.style.animationDuration = `${2.5 + Math.random() * 1.8}s`;
-    piece.style.transform = `rotate(${Math.random() * 180}deg)`;
+    piece.style.background = colors[i % colors.length];
+    piece.style.animationDelay = `${Math.random() * 1.2}s`;
+    piece.style.animationDuration = `${2.4 + Math.random() * 1.8}s`;
+
     confetti.appendChild(piece);
   }
 }
 
-function resetQuestionState() {
-  noCount = 0;
-  catCaption.textContent = "This cat believes in us.";
-  catWrap.classList.remove("sad", "very-sad");
-  yesBtn.style.setProperty("--yes-scale", 1);
-  noBtn.classList.remove("runaway");
-  noBtn.removeAttribute("style");
-  noBtn.textContent = "No";
-}
-
 function restart() {
   confetti.innerHTML = "";
-  heartStage.innerHTML = "";
   shareStatus.textContent = "";
   nameInput.value = "";
   nameError.textContent = "";
-  nameInput.classList.remove("has-error");
-  switchScreen(yesScreen, introScreen, () => nameInput.focus());
+  resetQuestionState();
+  showOnly(introScreen);
+  nameInput.focus();
 }
 
 async function sharePage() {
   const shareData = {
     title: `A little sorry for ${herName}`,
-    text: `I made this tiny love page for ${herName} because one apology should feel personal, sweet, and impossible to ignore.`,
+    text: `I made this cute apology page for ${herName}.`,
     url: window.location.href
   };
 
   try {
     if (navigator.share) {
       await navigator.share(shareData);
-      shareStatus.textContent = "Shared. Now let the apology do its sweetest work.";
+      shareStatus.textContent = "Shared successfully.";
       return;
     }
 
     await navigator.clipboard.writeText(window.location.href);
-    shareStatus.textContent = "Link copied. Send it with one honest sorry.";
-  } catch (error) {
-    shareStatus.textContent = "Sharing paused. The page is still ready when your heart is.";
+    shareStatus.textContent = "Link copied.";
+  } catch {
+    shareStatus.textContent = "Could not share now. Try copying the link manually.";
   }
 }
 
@@ -258,6 +227,7 @@ function toggleMusic() {
 
 function startMusic() {
   audioContext = audioContext || new (window.AudioContext || window.webkitAudioContext)();
+
   if (audioContext.state === "suspended") {
     audioContext.resume();
   }
@@ -265,60 +235,45 @@ function startMusic() {
   musicOn = true;
   musicToggle.textContent = "Music ON";
   musicToggle.classList.add("is-on");
-  musicToggle.setAttribute("aria-pressed", "true");
+
   playMelody();
-  musicTimer = window.setInterval(playMelody, 7200);
+  musicTimer = setInterval(playMelody, 7200);
 }
 
 function stopMusic() {
   musicOn = false;
-  window.clearInterval(musicTimer);
+  clearInterval(musicTimer);
   musicToggle.textContent = "Music OFF";
   musicToggle.classList.remove("is-on");
-  musicToggle.setAttribute("aria-pressed", "false");
 }
 
 function playMelody() {
-  if (!audioContext || !musicOn) {
-    return;
-  }
+  if (!audioContext || !musicOn) return;
 
   const now = audioContext.currentTime;
-  const melody = [659.25, 783.99, 880, 783.99, 659.25, 587.33, 659.25, 523.25];
-  const chords = [
-    [261.63, 329.63, 392],
-    [293.66, 349.23, 440],
-    [220, 329.63, 440],
-    [261.63, 392, 523.25]
-  ];
+  const notes = [659.25, 783.99, 880, 783.99, 659.25, 587.33, 659.25, 523.25];
 
-  chords.forEach((chord, index) => {
-    playChord(chord, now + index * 1.8, 1.65);
-  });
-
-  melody.forEach((frequency, index) => {
-    playNote(frequency, now + 0.18 + index * 0.42, 0.34, 0.035);
+  notes.forEach((frequency, index) => {
+    playNote(frequency, now + index * 0.42, 0.34);
   });
 }
 
-function playChord(frequencies, startTime, duration) {
-  frequencies.forEach((frequency) => playNote(frequency, startTime, duration, 0.014));
-}
-
-function playNote(frequency, startTime, duration, volume) {
+function playNote(frequency, startTime, duration) {
   const oscillator = audioContext.createOscillator();
   const gain = audioContext.createGain();
 
   oscillator.type = "triangle";
   oscillator.frequency.setValueAtTime(frequency, startTime);
+
   gain.gain.setValueAtTime(0.0001, startTime);
-  gain.gain.exponentialRampToValueAtTime(volume, startTime + 0.08);
+  gain.gain.exponentialRampToValueAtTime(0.035, startTime + 0.08);
   gain.gain.exponentialRampToValueAtTime(0.0001, startTime + duration);
 
   oscillator.connect(gain);
   gain.connect(audioContext.destination);
+
   oscillator.start(startTime);
-  oscillator.stop(startTime + duration + 0.04);
+  oscillator.stop(startTime + duration + 0.05);
 }
 
 nameForm.addEventListener("submit", startApology);
@@ -327,9 +282,3 @@ yesBtn.addEventListener("click", sayYes);
 restartBtn.addEventListener("click", restart);
 shareBtn.addEventListener("click", sharePage);
 musicToggle.addEventListener("click", toggleMusic);
-nameInput.addEventListener("input", () => {
-  if (nameInput.value.trim()) {
-    nameError.textContent = "";
-    nameInput.classList.remove("has-error");
-  }
-});
