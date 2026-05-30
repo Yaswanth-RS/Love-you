@@ -1,5 +1,5 @@
 const imageUrls = {
-  intro: "PASTE_DIRECT_IMAGE_URL_HERE",
+  intro: "https://i.pinimg.com/564x/f0/a6/9e/f0a69ef75c98d89811f0581c5746b678.jpg",
   normal: "PASTE_DIRECT_IMAGE_URL_HERE",
   sad: "PASTE_DIRECT_IMAGE_URL_HERE",
   crying: "PASTE_DIRECT_IMAGE_URL_HERE",
