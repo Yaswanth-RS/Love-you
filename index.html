@@ -8,24 +8,45 @@
 </head>
 <body>
   <main class="app" aria-live="polite">
-    <section class="question-screen" id="questionScreen">
-      <div class="floating-hearts" aria-hidden="true">
-        <span></span>
-        <span></span>
-        <span></span>
-        <span></span>
-        <span></span>
-        <span></span>
-      </div>
+    <div class="ambient ambient-one" aria-hidden="true"></div>
+    <div class="ambient ambient-two" aria-hidden="true"></div>
+    <div class="floating-hearts" aria-hidden="true">
+      <span></span>
+      <span></span>
+      <span></span>
+      <span></span>
+      <span></span>
+      <span></span>
+      <span></span>
+      <span></span>
+    </div>
 
-      <div class="love-panel">
-        <p class="eyebrow">A tiny sorry from me to you</p>
-        <h1>Will you forgive me and love me again?</h1>
-        <p class="message" id="messageText">
-          I know I made you angry, and I am really sorry. I made this little page because you deserve effort, sweetness, and the biggest apology from my heart.
+    <button class="music-toggle" id="musicToggle" type="button" aria-pressed="false">
+      Music OFF
+    </button>
+
+    <section class="screen intro-screen" id="introScreen">
+      <form class="glass-panel intro-panel" id="nameForm">
+        <p class="eyebrow">A little love letter begins here</p>
+        <h1>Enter her name</h1>
+        <p class="lead">
+          I will make the apology feel like it was written only for her, because it should.
         </p>
+        <label class="name-field">
+          <span>Her beautiful name</span>
+          <input id="nameInput" type="text" autocomplete="name" maxlength="28" placeholder="Type her name" required>
+        </label>
+        <button class="btn primary-btn" type="submit">Start the apology</button>
+      </form>
+    </section>
 
-        <div class="cat-wrap" id="catWrap" aria-label="A cute cat waiting for your answer">
+    <section class="screen question-screen hidden" id="questionScreen">
+      <div class="glass-panel love-panel">
+        <p class="eyebrow">A tiny sorry from me to you</p>
+        <h2 id="questionTitle">Will you forgive me and love me again?</h2>
+        <p class="message typewriter" id="messageText"></p>
+
+        <div class="cat-wrap" id="catWrap" aria-label="A cute sad cat waiting for your answer">
           <div class="cat">
             <div class="ear ear-left"></div>
             <div class="ear ear-right"></div>
@@ -52,14 +73,15 @@
       </div>
     </section>
 
-    <section class="yes-screen hidden" id="yesScreen">
+    <section class="screen yes-screen hidden" id="yesScreen">
       <div class="confetti" id="confetti" aria-hidden="true"></div>
+      <div class="heart-stage" id="heartStage" aria-hidden="true"></div>
 
       <div class="hero">
         <p class="eyebrow">She said yes</p>
-        <h2>Thank you for giving me another chance.</h2>
-        <p>
-          I am sorry for hurting you. I do not want to win an argument more than I want to protect your smile. I promise to listen better, speak softer, and choose you with more care.
+        <h2 id="yesTitle">Thank you for giving me another chance.</h2>
+        <p id="yesMessage">
+          I am sorry for hurting you. I do not want to win an argument more than I want to protect your smile.
         </p>
       </div>
 
@@ -82,14 +104,18 @@
       </div>
 
       <div class="letter">
-        <p class="script">My favorite person,</p>
-        <p>
-          You are precious to me. Your laugh, your mood, your little angry face, and your soft heart all matter to me. I made this page because I never want you to feel ordinary in my life.
+        <p class="script" id="letterGreeting">My favorite person,</p>
+        <p id="letterBody">
+          You are precious to me. Your laugh, your mood, your little angry face, and your soft heart all matter to me.
         </p>
         <p class="closing">Please smile now. I miss you.</p>
       </div>
 
-      <button class="btn restart-btn" id="restartBtn" type="button">Replay the love test</button>
+      <div class="final-actions">
+        <button class="btn share-btn" id="shareBtn" type="button">Share this page</button>
+        <button class="btn restart-btn" id="restartBtn" type="button">Replay the love test</button>
+      </div>
+      <p class="share-status" id="shareStatus" role="status"></p>
     </section>
   </main>
 
